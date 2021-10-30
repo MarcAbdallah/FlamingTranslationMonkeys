@@ -1,0 +1,3 @@
+function translation(){
+    alert("Translating");
+}
