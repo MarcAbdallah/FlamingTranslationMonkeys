@@ -103,7 +103,7 @@ class FileUpload extends Component {
                     </button>
                 </div>
                 {this.getFileData()}
-                <audio id="speech" />
+                <audio controls id="speech" />
             </div>
         )
     }

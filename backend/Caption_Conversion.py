@@ -17,7 +17,7 @@ def time_to_ms(time):
     ms = int((int(layers[0]) * 3600000) + (int(layers[1]) * 60000) + (float(layers[2]) * 1000))
     return ms
 
-
+# TODO: Why is this only returning the first subtitle
 def SRT_to_API(in_file):
     #params: in_file is the SRT file to convert
     #output: API string
@@ -36,7 +36,6 @@ def SRT_to_API(in_file):
         API_string += "<break time=\"" + str(line[0] - previous_end) + "ms\"/> " + line[2] + " "
         previous_end = line[1]
     # API_string += "</speak>"
-
     return API_string
 
 
@@ -50,7 +49,7 @@ def extract_lines(in_file):
     # Hello there.
     # this is a byte stream, so decode
     raw_subtitle = in_file.read().decode("utf-8")
-    subtitle_split = raw_subtitle.split(sep='\n\n')
+    subtitle_split = raw_subtitle.split(sep='\r\n\r\n')
     subtitle_split[0] = subtitle_split[0].replace('\ufeff','') # remove \ufeff from first line
     return subtitle_split
 

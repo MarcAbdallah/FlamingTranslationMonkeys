@@ -10,7 +10,7 @@ import os
 app = Flask(__name__)
 cors = CORS(app)
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'C:/Users/joshi/Documents/programming-files/gcp_private_keys/flaming-translation-monkeys-6eddfb9bf8c5.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "D:/joshi/Documents/programming-files/gcp_private_keys/flaming-translation-monkeys-942679b86bf1.json"
 
 @app.route("/")
 def hello_world():
@@ -30,7 +30,6 @@ def SRTtoAPI():
         text = text.decode("utf-8")
     #code for translation
     result = translate_client.translate(text, target_language=target_lang)
-    print(result)
     # print(u"Text: {}".format(result["input"]))
     # print(u"Translation: {}".format(result["translatedText"]))
     # print(u"Detected source language: {}".format(result["detectedSourceLanguage"]))
@@ -66,8 +65,7 @@ def SRTtoAPI():
     # from googletrans import Translator
     # translator = Translator(service_urls=['translate.google.com',]))
     # translation = translator.translate(text, dest='en', src='auto', **kwargs)
-    return "Hello"
-
+    return send_from_directory(FILE_DIR, "sounds.wav", as_attachment=True)
 
 def valid_breakpoint(text, index):
     if text[index] != " ":
@@ -79,7 +77,6 @@ def valid_breakpoint(text, index):
 
 
 def break_apart(text):
-    print
     tags = len("<speak>  </speak>")
     
     if len(text) < 5000 - tags:
@@ -94,16 +91,19 @@ def break_apart(text):
     texts.append("<speak> " + text + "</speak>")
     return texts
 
+# https://docs.faculty.ai/user-guide/apis/flask_apis/flask_file_upload_download.html
+FILE_DIR = "files/"
 
 # Helper Functions (no app routes)
 # From: https://codelabs.developers.google.com/codelabs/cloud-text-speech-python3#8
+# TODO: Option to convert each subtitle into its own wav and merge all of them together
 def text_to_wav(voice_name: str, text: str):
     language_code = "-".join(voice_name.split("-")[:2])
     # test_text = "<speak>Testing the text to speech and then testing it again and then testing it again and then testing it a third time and how about we test it one more time just to be sure. <break time=\"1s\"/> Please work, and if you don't I will be very upset with you. </speak>"
     texts = break_apart(text)
     counter = 0
     file_list = list()
-    outfile = "sounds.wav"
+    outfile = FILE_DIR + "sounds.wav"
     for txt in texts:
         text_input = tts.SynthesisInput(ssml=txt)
         voice_params = tts.VoiceSelectionParams(
@@ -116,7 +116,7 @@ def text_to_wav(voice_name: str, text: str):
             input=text_input, voice=voice_params, audio_config=audio_config
         )
 
-        filename = f"text_{counter}.wav"
+        filename = FILE_DIR + f"text_{counter}.wav"
         counter+=1
         # filename = "translation.mp3"
         with open(filename, "wb") as out:
@@ -129,34 +129,21 @@ def text_to_wav(voice_name: str, text: str):
         w = wave.open(infile,'rb')
         data.append([w.getparams(),w.readframes(w.getnframes())])
         w.close()
+        # Remove unnecessary wav files
+        try: 
+            os.remove(infile)
+        except:
+            print("Unknown error...")
     output = wave.open(outfile,'wb')
     output.setparams(data[0][0])
     for i in range(len(data)):
         output.writeframes(data[i][1])
     output.close()
 
-# https://docs.faculty.ai/user-guide/apis/flask_apis/flask_file_upload_download.html
-UPLOAD_DIRECTORY = "/download"
-
 @app.route("/files/<path:path>")
 def get_file(path):
     """Download a file."""
-    return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
-
-
-@app.route("/files/<filename>", methods=["POST"])
-def post_file(filename):
-    """Upload a file."""
-
-    if "/" in filename:
-        # Return 400 BAD REQUEST
-        abort(400, "no subdirectories allowed")
-
-    with open(os.path.join(UPLOAD_DIRECTORY, filename), "wb") as fp:
-        fp.write(request.data)
-
-    # Return 201 CREATED
-    return "", 201
+    return send_from_directory(FILE_DIR, path, as_attachment=True)
 
 if __name__ == '__main__':    
     # text = Caption_Conversion.SRT_to_API("Caption_File/Adi.srt")
