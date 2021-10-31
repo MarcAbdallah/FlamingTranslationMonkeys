@@ -1,6 +1,6 @@
 # FlamingTranslationMonkeys
 
-To Run the project, you will first need to install a some dependencies.
+To Run the project, you will first need to install some dependencies.
 
 Instructions for Windows
 Setting up the front end (from top level dir):
