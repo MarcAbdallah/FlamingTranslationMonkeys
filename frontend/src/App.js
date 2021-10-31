@@ -1,14 +1,13 @@
 import React from 'react'
 
-import './App.css';
-import Navbar from './components/Navbar';
-import FileUpload from './components/FileUpload';
+import MyNavbar from './components/MyNavbar';
+import Routes from './components/Routes';
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <FileUpload file="Subtitles" />
+    <div className="App h-100">
+      <MyNavbar />
+      <Routes />
     </div>
   );
 }
