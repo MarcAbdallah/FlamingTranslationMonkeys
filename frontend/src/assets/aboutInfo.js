@@ -22,7 +22,7 @@ const members = {
     },
     rishi: {
         id: 2,
-        name: "Rishi Iyer",
+        name: "Marc Abdallah",
         job: "Backend Engineer",
         bio: "Rishi is a super-duper-senior who’s attending UT Austin part time to complete his BS in CS degree. He’s also an associate product manager for Kwanzoo, a B2B SaaS startup in the Bay Area. In his free time he enjoys hiking, biking, dance, and NBA basketball.",
         linkedin: "",
@@ -30,17 +30,17 @@ const members = {
     },
     randall: {
         id: 3,
-        name: "Randall Crawford",
-        job: "Frontend Engineer",
-        bio: "Randall is a student at the University of Texas at Austin studying Computer Science. He is proficient in Java, Python, and C. In his free time, he enjoys wakeboarding, climbing, and strategy games.",
+        name: "Zachary Smith",
+        job: "Backend Engineer",
+        bio: "Zachary is a junior at the University of North Texas in Denton. Zachary is attending his 5th hackathon, and wants to specialize in deep learning.",
         linkedin: "",
         img: imgRandall
     }
 }
 
-const blurb = {
-    title: "Track My Candidate",
-    text: "There is a wealth of information available about elections, public representatives, and congressional legislation, but the majority of the public is still ill-informed about its government. The issue with government and legislation is that it is stereotyped with an aura of being boring and verbose. It is easier to digest bite-sized videos and articles curated by media networks rather than doing your own research when the data is so difficult to access. What use is data if it is not easily accessible? Democracy is dependent on the well-informed opinions of the public, and thus, we have made it our responsibility to provide that information in a simple and accessible manner with Track My Candidate."
-};
+// const blurb = {
+//     title: "Track My Candidate",
+//     text: "There is a wealth of information available about elections, public representatives, and congressional legislation, but the majority of the public is still ill-informed about its government. The issue with government and legislation is that it is stereotyped with an aura of being boring and verbose. It is easier to digest bite-sized videos and articles curated by media networks rather than doing your own research when the data is so difficult to access. What use is data if it is not easily accessible? Democracy is dependent on the well-informed opinions of the public, and thus, we have made it our responsibility to provide that information in a simple and accessible manner with Track My Candidate."
+// };
 
-export { blurb, members }
+export { members }

@@ -13,6 +13,7 @@
 
 def time_to_ms(time):
     layers = time.split(':')
+    # print(layers)
     layers[2] = layers[2].replace(",", ".")  # ['xx' hours, 'xx' minutes, 'xx.xxx' seconds]
     ms = int((int(layers[0]) * 3600000) + (int(layers[1]) * 60000) + (float(layers[2]) * 1000))
     return ms
@@ -24,6 +25,8 @@ def SRT_to_API(in_file):
     API_string = "" #"<speak> "
     #Extract the files from the SRT file
     subtitle_split = extract_lines(in_file)
+    #[begin,endtime,txt]
+    
     previous_end = 0
     for line in subtitle_split:
         # start with num\n start (space)-->(space) end time\n txt
@@ -35,8 +38,9 @@ def SRT_to_API(in_file):
         line[1] = time_to_ms(line[1])
         API_string += "<break time=\"" + str(line[0] - previous_end) + "ms\"/> " + line[2] + " "
         previous_end = line[1]
+    endtime = line[1]
     # API_string += "</speak>"
-    return API_string
+    return API_string,endtime
 
 
 def extract_lines(in_file):

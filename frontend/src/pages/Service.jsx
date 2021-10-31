@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 
-import FileUpload from '../components/FileUpload';
+import AIDubbing from '../components/AIDubbing';
 
 class Service extends Component {
     render() {
         return (
             <Container>
-                <Row>
+                <Row className="d-flex justify-content-center" style={{ marginTop: "50px"}}>
                     <Col>            
-                        <FileUpload />
+                        <AIDubbing />
                     </Col>
                 </Row>
             </Container>

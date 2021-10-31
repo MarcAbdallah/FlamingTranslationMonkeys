@@ -6,6 +6,7 @@ import google.cloud.texttospeech as tts
 import six
 import wave
 import os
+import contextlib
 # from Caption_Conversion import SRT_to_API
 app = Flask(__name__)
 cors = CORS(app)
@@ -21,9 +22,10 @@ def SRTtoAPI():
     in_file = request.files['file']
     target_lang = request.form['lang']
     gender = int(request.form['voice'])
-
-    text = Caption_Conversion.SRT_to_API(in_file)
-    
+    sync = int(request.form['sync'])
+    endtime = int(request.form['duration'])*1000 # in ms
+    text,caption_end = Caption_Conversion.SRT_to_API(in_file)
+    # we don't use caption_end; kept as legacy
     translate_client = translate.Client()
     
     if isinstance(text, six.binary_type):
@@ -40,12 +42,12 @@ def SRTtoAPI():
     lang_dict = {"en":["en-US-Standard-C","en-US-Standard-A"],
                  "ar":["ar-XA-Standard-A","ar-XA-Standard-B"],
                  "hi":["hi-IN-Standard-A","hi-IN-Standard-B"],
-                 "fr":["fr-FR-Standard-A","	fr-FR-Standard-B"]}
+                 "fr":["fr-FR-Standard-A","fr-FR-Standard-B"]}
     # if target_lang=='ar':
     #     key = "Arabic"
     # else:
     #     key = "Male" # no longer needed since keys and target language is the same
-    text_to_wav(voice_name=lang_dict[target_lang][gender],text=result['translatedText'])
+    text_to_wav(voice_name=lang_dict[target_lang][gender],text=result['translatedText'],sync=sync,endtime=endtime)
 
     # now a file will be saved on our side called "translated.wav"
     #send speech to front end
@@ -65,7 +67,29 @@ def SRTtoAPI():
     # from googletrans import Translator
     # translator = Translator(service_urls=['translate.google.com',]))
     # translation = translator.translate(text, dest='en', src='auto', **kwargs)
-    return send_from_directory(FILE_DIR, "sounds.wav", as_attachment=True)
+    if sync:
+        return send_from_directory(FILE_DIR, "sounds1.wav", as_attachment=True)
+    else:
+        return send_from_directory(FILE_DIR, "sounds.wav", as_attachment=True)
+
+
+def sync(wave_file,ratio):
+    # sync wave file by speeding up the video
+    CHANNELS = 1
+    swidth = 2
+    Change_RATE = ratio
+
+    spf = wave.open(wave_file, 'rb')
+    RATE=spf.getframerate()
+    signal = spf.readframes(-1)
+    spf.close()
+
+    wf = wave.open(FILE_DIR+"sounds1.wav", 'wb')
+    wf.setnchannels(CHANNELS)
+    wf.setsampwidth(swidth)
+    wf.setframerate(RATE*Change_RATE)
+    wf.writeframes(signal)
+    wf.close()
 
 def valid_breakpoint(text, index):
     if text[index] != " ":
@@ -97,7 +121,7 @@ FILE_DIR = "files/"
 # Helper Functions (no app routes)
 # From: https://codelabs.developers.google.com/codelabs/cloud-text-speech-python3#8
 # TODO: Option to convert each subtitle into its own wav and merge all of them together
-def text_to_wav(voice_name: str, text: str):
+def text_to_wav(voice_name: str, text: str,sync:int,endtime: int):
     language_code = "-".join(voice_name.split("-")[:2])
     # test_text = "<speak>Testing the text to speech and then testing it again and then testing it again and then testing it a third time and how about we test it one more time just to be sure. <break time=\"1s\"/> Please work, and if you don't I will be very upset with you. </speak>"
     texts = break_apart(text)
@@ -139,6 +163,15 @@ def text_to_wav(voice_name: str, text: str):
     for i in range(len(data)):
         output.writeframes(data[i][1])
     output.close()
+    with contextlib.closing(wave.open(outfile,'r')) as f:
+        frames = f.getnframes()
+        rate = f.getframerate()
+        audio_time = frames / float(rate)
+    
+    if sync == 1:
+        ratio = (audio_time*1000)/endtime
+        print(ratio)
+        sync(wave_file=outfile,ratio=ratio)
 
 @app.route("/files/<path:path>")
 def get_file(path):

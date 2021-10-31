@@ -1,4 +1,4 @@
-html, body {
+html, body, #root, .App {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -7,7 +7,7 @@ html, body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgba(127,127,127,2);
+  background-color: rgba(227,227,227,2);
 }
 
 code {

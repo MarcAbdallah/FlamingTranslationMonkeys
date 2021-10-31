@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 
-import { members, blurb } from "../assets/aboutInfo"
+import { members } from "../assets/aboutInfo"
 import AboutCard from '../components/AboutCard';
 
 class About extends Component {
