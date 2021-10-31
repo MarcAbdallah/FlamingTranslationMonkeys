@@ -39,7 +39,7 @@ def SRTtoAPI():
     #key is language
     # value is list of [voice female,voice male]
     gender = 0 # default female, can change later
-    lang_dict = {"en":["en-US-Standard-C","en-US-Standard-A",
+    lang_dict = {"en":["en-US-Standard-C","en-US-Standard-A"],
                  "ar":["ar-XA-Standard-A","ar-XA-Standard-B"],
                  "hi":["hi-IN-Standard-A","hi-IN-Standard-B"],
                  "fr":["fr-FR-Standard-A","	fr-FR-Standard-B"]}
