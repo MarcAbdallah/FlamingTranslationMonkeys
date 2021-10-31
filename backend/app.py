@@ -36,15 +36,18 @@ def SRTtoAPI():
     # print(u"Detected source language: {}".format(result["detectedSourceLanguage"]))
 
     #dictionary for each conversion
-    lang_dict = {"Male":"en-US-Standard-A",
-                 "Female":"en-US-Standard-C",
-                 "Female_Arabic":"ar-XA-Standard-A",
-                 "Male_Arabic":"ar-XA-Standard-B"}
-    if target_lang=='ar':
-        key = "Female_Arabic"
-    else:
-        key = "Male"
-    text_to_wav(voice_name=lang_dict[key],text=result)
+    #key is language
+    # value is list of [voice female,voice male]
+    gender = 0 # default female, can change later
+    lang_dict = {"en":["en-US-Standard-C","en-US-Standard-A",
+                 "ar":["ar-XA-Standard-A","ar-XA-Standard-B"],
+                 "hi":["hi-IN-Standard-A","hi-IN-Standard-B"],
+                 "fr":["fr-FR-Standard-A","	fr-FR-Standard-B"]}
+    # if target_lang=='ar':
+    #     key = "Arabic"
+    # else:
+    #     key = "Male" # no longer needed since keys and target language is the same
+    text_to_wav(voice_name=lang_dict[target_lang][gender],text=result)
 
     # now a file will be saved on our side called "translated.wav"
     #send speech to front end
