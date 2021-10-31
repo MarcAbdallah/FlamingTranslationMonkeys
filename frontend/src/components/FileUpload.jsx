@@ -4,9 +4,11 @@ class FileUpload extends Component {
     
     constructor() {
         super();
+        // Defaults
         this.state = {
             selectedFile: null,
-            targetLang: "fr"
+            targetLang: "fr",
+            voice: 0 // female
         };
     
         this.onFileSelect = event => {
@@ -16,10 +18,14 @@ class FileUpload extends Component {
         this.onLangSelect = event => {
             this.setState({ targetLang: event.target.value});
         }
+
+        this.onVoiceSelect = event => {
+            this.setState({ voice: event.target.value })
+        }
     
         this.onFileUpload = () => {
             // HTML Form Element
-            if(this.state.selectedFile && this.state.targetLang) {
+            if(this.state.selectedFile) {
                 const formData = new FormData();
     
                 formData.append(
@@ -30,6 +36,11 @@ class FileUpload extends Component {
                     "lang",
                     this.state.targetLang
                 );
+                formData.append(
+                    "voice",
+                    this.state.voice
+                )
+
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "http://localhost:8081/SRTtoAPI", true);
                 //xhr.setRequestHeader('Content-Type', 'application/json');
@@ -74,9 +85,9 @@ class FileUpload extends Component {
                         <option value="ar">Arabic</option>
                         <option value="en">English</option>
                     </select>
-                    <select name="gender" id="gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                    <select name="gender" id="gender" onChange={this.onVoiceSelect}>
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
                     </select>
                     <button onClick={this.onFileUpload}>
                       Upload!

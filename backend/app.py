@@ -10,7 +10,7 @@ import os
 app = Flask(__name__)
 cors = CORS(app)
 
-DOWNLOAD='/download'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'C:/Users/joshi/Documents/programming-files/gcp_private_keys/flaming-translation-monkeys-6eddfb9bf8c5.json'
 
 @app.route("/")
 def hello_world():
@@ -18,12 +18,9 @@ def hello_world():
 
 @app.route("/SRTtoAPI",methods = ["POST"])
 def SRTtoAPI():
-
-    print(request.files['file'])
-    print(request.form['lang'])
-
     in_file = request.files['file']
     target_lang = request.form['lang']
+    gender = int(request.form['voice'])
 
     text = Caption_Conversion.SRT_to_API(in_file)
     
@@ -41,7 +38,6 @@ def SRTtoAPI():
     #dictionary for each conversion
     #key is language
     # value is list of [voice female,voice male]
-    gender = 0 # default female, can change later
     lang_dict = {"en":["en-US-Standard-C","en-US-Standard-A"],
                  "ar":["ar-XA-Standard-A","ar-XA-Standard-B"],
                  "hi":["hi-IN-Standard-A","hi-IN-Standard-B"],
@@ -50,7 +46,7 @@ def SRTtoAPI():
     #     key = "Arabic"
     # else:
     #     key = "Male" # no longer needed since keys and target language is the same
-    text_to_wav(voice_name=lang_dict[target_lang][gender],text=result)
+    text_to_wav(voice_name=lang_dict[target_lang][gender],text=result['translatedText'])
 
     # now a file will be saved on our side called "translated.wav"
     #send speech to front end
@@ -83,6 +79,7 @@ def valid_breakpoint(text, index):
 
 
 def break_apart(text):
+    print
     tags = len("<speak>  </speak>")
     
     if len(text) < 5000 - tags:
@@ -102,7 +99,7 @@ def break_apart(text):
 # From: https://codelabs.developers.google.com/codelabs/cloud-text-speech-python3#8
 def text_to_wav(voice_name: str, text: str):
     language_code = "-".join(voice_name.split("-")[:2])
-    test_text = "<speak>Testing the text to speech and then testing it again and then testing it again and then testing it a third time and how about we test it one more time just to be sure. <break time=\"1s\"/> Please work, and if you don't I will be very upset with you. </speak>"
+    # test_text = "<speak>Testing the text to speech and then testing it again and then testing it again and then testing it a third time and how about we test it one more time just to be sure. <break time=\"1s\"/> Please work, and if you don't I will be very upset with you. </speak>"
     texts = break_apart(text)
     counter = 0
     file_list = list()
