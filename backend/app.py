@@ -16,11 +16,14 @@ DOWNLOAD='/download'
 def hello_world():
     return "<p>Hello, World!</p>"
 
-@app.route("/SRTtoAPI",methods = ["POST","GET"])
+@app.route("/SRTtoAPI",methods = ["POST"])
 def SRTtoAPI():
-    
-    in_file = None
-    target_lang = None
+
+    print(request.files['file'])
+    print(request.form['lang'])
+
+    in_file = request.files['file']
+    target_lang = request.form['lang']
 
     text = Caption_Conversion.SRT_to_API(in_file)
     
@@ -158,19 +161,17 @@ def post_file(filename):
     # Return 201 CREATED
     return "", 201
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
+    # text = Caption_Conversion.SRT_to_API("Caption_File/Adi.srt")
+    # # txts = break_apart(text)
+    # # print(len(txts[1]))
+    # # print(txts[1])
+    # translate_client = translate.Client()
     
-    
-    text = Caption_Conversion.SRT_to_API("Caption_File/Adi.srt")
-    # txts = break_apart(text)
-    # print(len(txts[1]))
-    # print(txts[1])
-    translate_client = translate.Client()
-    
-    if isinstance(text, six.binary_type):
-        text = text.decode("utf-8")
-    result = translate_client.translate(text, target_language="ar")
-    print(result.keys())
-    text_to_wav("ar-XA-Standard-A",text=result['translatedText'])
-    # # text = SRTtoAPI("Caption_File/Adi.srt", "en")
-    # app.run(host='0.0.0.0', port=8081)
+    # if isinstance(text, six.binary_type):
+    #     text = text.decode("utf-8")
+    # result = translate_client.translate(text, target_language="ar")
+    # print(result.keys())
+    # text_to_wav("ar-XA-Standard-A",text=result['translatedText'])
+    # # # text = SRTtoAPI("Caption_File/Adi.srt", "en")
+    app.run(host='0.0.0.0', port=8081)

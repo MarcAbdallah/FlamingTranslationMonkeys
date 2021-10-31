@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 
 class FileUpload extends Component {
     
@@ -7,26 +6,37 @@ class FileUpload extends Component {
         super();
         this.state = {
             selectedFile: null,
-            targetLang: null
+            targetLang: "fr"
         };
     
         this.onFileSelect = event => {
             this.setState({ selectedFile: event.target.files[0]});
         }
+
+        this.onLangSelect = event => {
+            this.setState({ targetLang: event.target.value});
+        }
     
         this.onFileUpload = () => {
             // HTML Form Element
-            if(this.selectedFile && this.targetLang) {
+            if(this.state.selectedFile && this.state.targetLang) {
                 const formData = new FormData();
     
                 formData.append(
-                    this.props.file,
-                    this.state.selectedFile,
-                    this.state.selectedFile.name,
-                    this.targetLang
+                    "file",
+                    this.state.selectedFile
                 );
-        
-                axios.post("localhost:8081/SRTtoAPI/", formData);
+                formData.append(
+                    "lang",
+                    this.state.targetLang
+                );
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "http://localhost:8081/SRTtoAPI", true);
+                //xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = function () {
+                    console.log(this.responseText);
+                }
+                xhr.send(formData);
             }
         };
     
@@ -58,11 +68,11 @@ class FileUpload extends Component {
                 <div>
                     <input type="file" onChange={this.onFileSelect} />
                     <label>Target</label>
-                    <select name="language" id="language">
-                        <option value="en">English</option>
+                    <select name="language" id="language" onChange={this.onLangSelect}>
                         <option value="fr">French</option>
                         <option value="hi">Hindi</option>
                         <option value="ar">Arabic</option>
+                        <option value="en">English</option>
                     </select>
                     <select name="gender" id="gender">
                         <option value="male">Male</option>

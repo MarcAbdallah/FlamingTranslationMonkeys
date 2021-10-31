@@ -48,9 +48,8 @@ def extract_lines(in_file):
     # 1
     # 00:00:02,100 --> 00:00:02,790
     # Hello there.
-    SRT = open(in_file, 'r')
-    raw_subtitle = SRT.read()
-    SRT.close() # get raw content
+    # this is a byte stream, so decode
+    raw_subtitle = in_file.read().decode("utf-8")
     subtitle_split = raw_subtitle.split(sep='\n\n')
     subtitle_split[0] = subtitle_split[0].replace('\ufeff','') # remove \ufeff from first line
     return subtitle_split
