@@ -41,11 +41,20 @@ class FileUpload extends Component {
                     this.state.voice
                 )
 
+                var audio = document.getElementById("speech");
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "http://localhost:8081/SRTtoAPI", true);
                 //xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.responseType = 'blob';
                 xhr.onload = function () {
-                    console.log(this.responseText);
+                    var blob = new Blob([xhr.response], {type: 'audio/wav'});
+                    var objectUrl = URL.createObjectURL(blob);
+                    audio.src = objectUrl;
+                    // Release resource when it's loaded
+                    audio.onload = function() {
+                      URL.revokeObjectURL(objectUrl);
+                    };
+                    audio.play();
                 }
                 xhr.send(formData);
             }
@@ -94,6 +103,7 @@ class FileUpload extends Component {
                     </button>
                 </div>
                 {this.getFileData()}
+                <audio id="speech" />
             </div>
         )
     }
