@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { axios } from 'axios'
+import axios from 'axios'
 
 class FileUpload extends Component {
     
@@ -15,15 +15,17 @@ class FileUpload extends Component {
     
         this.onFileUpload = () => {
             // HTML Form Element
-            const formData = new FormData();
+            if(this.selectedFile) {
+                const formData = new FormData();
     
-            formData.append(
-                this.props.file,
-                this.state.selectedFile,
-                this.state.selectedFile.name
-            );
-    
-            axios.post("", formData);
+                formData.append(
+                    this.props.file,
+                    this.state.selectedFile,
+                    this.state.selectedFile.name
+                );
+        
+                axios.post("localhost:8081", formData);
+            }
         };
     
         this.getFileData = () => {
@@ -34,7 +36,7 @@ class FileUpload extends Component {
                         <p>File Name: {this.state.selectedFile.name}</p>
                         <p>File Type: {this.state.selectedFile.type}</p>
                         <p>File Size: {this.state.selectedFile.size}</p>
-                        <p>Last Modified: {this.state.selectedFile.lastModified.toDateString()}</p>
+                        <p>Last Modified: {this.state.selectedFile.lastModified}</p>
                     </div>
                 )
             } else {
