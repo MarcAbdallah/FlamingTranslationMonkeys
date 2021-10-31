@@ -6,7 +6,8 @@ class FileUpload extends Component {
     constructor() {
         super();
         this.state = {
-            selectedFile: null
+            selectedFile: null,
+            targetLang: null
         };
     
         this.onFileSelect = event => {
@@ -15,16 +16,17 @@ class FileUpload extends Component {
     
         this.onFileUpload = () => {
             // HTML Form Element
-            if(this.selectedFile) {
+            if(this.selectedFile && this.targetLang) {
                 const formData = new FormData();
     
                 formData.append(
                     this.props.file,
                     this.state.selectedFile,
-                    this.state.selectedFile.name
+                    this.state.selectedFile.name,
+                    this.targetLang
                 );
         
-                axios.post("localhost:8081", formData);
+                axios.post("localhost:8081/SRTtoAPI/", formData);
             }
         };
     
@@ -55,6 +57,17 @@ class FileUpload extends Component {
                 <h3>Upload {this.props.file}</h3>
                 <div>
                     <input type="file" onChange={this.onFileSelect} />
+                    <label>Target</label>
+                    <select name="language" id="language">
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="hi">Hindi</option>
+                        <option value="ar">Arabic</option>
+                    </select>
+                    <select name="gender" id="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
                     <button onClick={this.onFileUpload}>
                       Upload!
                     </button>

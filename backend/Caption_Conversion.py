@@ -21,7 +21,7 @@ def time_to_ms(time):
 def SRT_to_API(in_file):
     #params: in_file is the SRT file to convert
     #output: API string
-    API_string = "<speak> "
+    API_string = "" #"<speak> "
     #Extract the files from the SRT file
     subtitle_split = extract_lines(in_file)
     previous_end = 0
@@ -35,7 +35,7 @@ def SRT_to_API(in_file):
         line[1] = time_to_ms(line[1])
         API_string += "<break time=\"" + str(line[0] - previous_end) + "ms\"/> " + line[2] + " "
         previous_end = line[1]
-    API_string += "</speak>"
+    # API_string += "</speak>"
 
     return API_string
 
