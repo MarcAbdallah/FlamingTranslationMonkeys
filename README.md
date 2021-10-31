@@ -32,3 +32,5 @@ Male voice config error
 Sync drop down doesn't change anything, you only receive ratio-synced audios
 
 The audio and video sliders aren't synced. To reset, you need to reload the page
+
+While the backend is processing text, there is no loading screen. You have to wait until the audio and the video autoplay. As mentioned earlier, you can't really play around with the sliders yet, and will have to reload the page to reset.
