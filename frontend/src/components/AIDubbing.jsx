@@ -59,9 +59,14 @@ class AIDubbing extends Component {
                 var video = document.getElementById("vid");
                 video.src = this.state.selectedVid;
 
+                var duration;
+                video.onloadedmetadata = function() {
+                    duration = this.duration;
+                }
+
                 formData.append(
                     "duration",
-                    video.duration // seconds
+                    duration // seconds
                 )
 
                 var xhr = new XMLHttpRequest();

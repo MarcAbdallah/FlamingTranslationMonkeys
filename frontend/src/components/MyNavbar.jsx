@@ -5,7 +5,7 @@ function MyNavbar() {
     return (
         <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
             <Container>
-                <NavbarBrand href="/">Flaming Translation Monkeys</NavbarBrand>
+                <NavbarBrand href="/">EasyDubs</NavbarBrand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
                         <Nav>

@@ -22,8 +22,8 @@ def SRTtoAPI():
     in_file = request.files['file']
     target_lang = request.form['lang']
     gender = int(request.form['voice'])
-    sync = int(request.form['sync'])
-    endtime = int(request.form['duration'])*1000 # in ms
+    # sync = int(request.form['sync'])
+    # endtime = int(request.form['duration'])*1000 # in ms
     text,caption_end = Caption_Conversion.SRT_to_API(in_file)
     # we don't use caption_end; kept as legacy
     translate_client = translate.Client()
@@ -47,7 +47,7 @@ def SRTtoAPI():
     #     key = "Arabic"
     # else:
     #     key = "Male" # no longer needed since keys and target language is the same
-    text_to_wav(voice_name=lang_dict[target_lang][gender],text=result['translatedText'],sync=sync,endtime=endtime)
+    text_to_wav(voice_name=lang_dict[target_lang][gender],text=result['translatedText'],sync=sync,endtime=caption_end)
 
     # now a file will be saved on our side called "translated.wav"
     #send speech to front end
@@ -67,10 +67,11 @@ def SRTtoAPI():
     # from googletrans import Translator
     # translator = Translator(service_urls=['translate.google.com',]))
     # translation = translator.translate(text, dest='en', src='auto', **kwargs)
-    if sync:
-        return send_from_directory(FILE_DIR, "sounds1.wav", as_attachment=True)
-    else:
-        return send_from_directory(FILE_DIR, "sounds.wav", as_attachment=True)
+    return send_from_directory(FILE_DIR, "sounds1.wav", as_attachment=True)
+    # if sync:
+    #     return send_from_directory(FILE_DIR, "sounds1.wav", as_attachment=True)
+    # else:
+    #     return send_from_directory(FILE_DIR, "sounds.wav", as_attachment=True)
 
 
 def sync(wave_file,ratio):
@@ -168,10 +169,10 @@ def text_to_wav(voice_name: str, text: str,sync:int,endtime: int):
         rate = f.getframerate()
         audio_time = frames / float(rate)
     
-    if sync == 1:
-        ratio = (audio_time*1000)/endtime
-        print(ratio)
-        sync(wave_file=outfile,ratio=ratio)
+    
+    ratio = (audio_time*1000)/endtime
+    print(ratio)
+    sync(wave_file=outfile,ratio=ratio)
 
 @app.route("/files/<path:path>")
 def get_file(path):

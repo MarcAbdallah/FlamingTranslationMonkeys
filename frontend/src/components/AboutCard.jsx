@@ -9,7 +9,7 @@ class AboutCard extends Component {
     render() {
         return(
             <Card style={{ minWidth: '14rem', maxWidth: '18rem', marginBottom: '10px', height: "45rem" }}>
-                <Card.Img variant="top" src={this.props.img} />
+                <Card.Img variant="top" src={this.props.img} style={{ height: "20rem", objectFit:"cover"}} />
                 <Card.Body>
                     <Card.Title>{this.props.name}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">{this.props.role}</Card.Subtitle>

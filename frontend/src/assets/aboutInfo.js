@@ -1,7 +1,7 @@
 import imgGovind from "./img/govind.jpg"
-import imgShruti from "./img/shruti.JPG"
-import imgRishi from "./img/rishi.jpg"
-import imgRandall from "./img/randall.jpg"
+import imgAdi from "./img/adi.JPG"
+import imgMarc from "./img/marc.png"
+import imgZach from "./img/zach.png"
 
 const members = {
     govind: {
@@ -14,27 +14,27 @@ const members = {
     },
     shruti: {
         id: 1,
-        name: "Shruti Banerjie",
+        name: "Aditya Ojha",
         job: "Backend Engineer",
-        bio: "Shruti is a junior studying Computer Science at UT Austin. She is originally from Houston, Texas and is interested in Artificial Intelligence and Human-computer interaction. Shruti enjoys baking, painting, and watching movies in her free time. ",
-        linkedin: "",
-        img: imgShruti
+        bio: "Adi is a Junior in UT's Electrical and Computer Engineering Department. His interests span machine learning research, hardware-software co-design, and biomedical applications of AI. He is a avid Toastmaster and loves to watch anime and workout in his free time.",
+        linkedin: "https://www.linkedin.com/in/adiojha/",
+        img: imgAdi
     },
     rishi: {
         id: 2,
         name: "Marc Abdallah",
         job: "Backend Engineer",
-        bio: "Rishi is a super-duper-senior who’s attending UT Austin part time to complete his BS in CS degree. He’s also an associate product manager for Kwanzoo, a B2B SaaS startup in the Bay Area. In his free time he enjoys hiking, biking, dance, and NBA basketball.",
-        linkedin: "",
-        img: imgRishi
+        bio: "Marc Abdallah is a junior in biomedical engineering at the Univedrsity of Texas at Austin. Marc is focused on studying biomolecular and cellular engineering. He is also interested in machine learning and AI-assisted medicine.",
+        linkedin: "https://www.linkedin.com/in/marc-abdallah-55a5a1191/",
+        img: imgMarc
     },
     randall: {
         id: 3,
         name: "Zachary Smith",
         job: "Backend Engineer",
         bio: "Zachary is a junior at the University of North Texas in Denton. Zachary is attending his 5th hackathon, and wants to specialize in deep learning.",
-        linkedin: "",
-        img: imgRandall
+        linkedin: "https://www.linkedin.com/in/zachary-smith-ba2763194/",
+        img: imgZach
     }
 }
 
